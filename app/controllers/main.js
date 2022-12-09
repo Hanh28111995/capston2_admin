@@ -17,16 +17,31 @@ window.onscroll = function () {
     }
 }
 
-//Tìm kiếm một phần tử trong mảng bằng tên
-function findInArrById(id, arrObject) {
-    let result = -1;
-    arrObject.forEach(function (item, index) {
-        if (id == item.product.id) {
-            result = index;
-        }
-    })
-    return result;
+//Tìm kiếm một sp trong mảng bằng tên
+
+function save_Value() {
+    let x = getMyEle("input_search").value;
+    return x
 }
+
+function getListPhones_filter(x) {
+    services.getListPhonesAPI()
+        .then(function (result) {
+            var arr_Search = [];
+            result.data.forEach(function(item){
+                if(item.name.toLowerCase().indexOf(x.toLowerCase()) > -1)
+                {
+                    arr_Search.push(item);
+                }
+            });
+            if(arr_Search == [])
+            {
+                arr_Search = result.data;
+            }
+            renderList(arr_Search);
+        })
+}
+
 //-------------------------------------------------------------------------
 
 //Render list Phone
@@ -120,8 +135,6 @@ function deleteHandler(id) {
         })
 
 }
-
-// Process thêm nhân viên mới-----------------------
 //Khi nhấn vào nút Thêm mới
 document.querySelector("#btnThemSanPham").onclick = function () {
     document.querySelector(".modal-title").innerHTML = "Add new product";
@@ -198,7 +211,7 @@ function validateInput(isAdding, callBackFunction, id) {
 
 }
 
-//Xóa thông tin input
+//Xóa thông tin input (input empty after clearr)
 function clearInput() {
     document.querySelector("#name").value = "";
     document.querySelector("#price").value = "";
